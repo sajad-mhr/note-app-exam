@@ -331,5 +331,13 @@
     toastBtn.addEventListener("click", closeToast);
 
     register_btn.addEventListener("click", validationForm);
+    window.addEventListener("load",()=>{
+      let x = document.cookie;
+      console.log(x);
+      console.log(x.split("=")[1]);
+      if(x.split("=")[1]){
+        window.location.href = "/home"
+      }
+    })
   </script>
 </html>

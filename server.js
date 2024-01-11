@@ -24,13 +24,14 @@ const routes = {
   verifyApi: verifyToken,
   register: registerPageController,
   login: loginPageController,
+  home: homePageController,
 };
 
 function write(res, statusCode, headerType, body, token) {
   if (token) {
     res.writeHead(statusCode, {
       "Content-Type": types[headerType],
-      "Set-Cookie": token,
+      "Set-Cookie": `userToken=${token} `,
     });
     res.write(body);
     res.end();
@@ -52,6 +53,15 @@ function registerPageController(req, res) {
 }
 function loginPageController(req, res) {
   fs.readFile("./pages/loginPage/loginPage.html", (error, data) => {
+    if (error) {
+      write(res, 404, "text", "not found");
+    } else {
+      write(res, 200, "html", data);
+    }
+  });
+}
+function homePageController(req, res) {
+  fs.readFile("./pages/homePage/homePage.html", (error, data) => {
     if (error) {
       write(res, 404, "text", "not found");
     } else {
@@ -117,7 +127,7 @@ function loginController(req, res, data) {
         filedata.data.forEach((user) => {
           if (user.email === data.email && user.password === data.password) {
             const token = jwt.sign({ user }, "shhhhh");
-            write(res, 200, "text", "login success", token);
+            write(res, 200, "text", "login successfully", token);
             status = true;
           }
         });
@@ -129,25 +139,27 @@ function loginController(req, res, data) {
   }
 }
 
-function verifyToken(req, res) {
+function verifyToken(req, res, data) {
   let token = req.headers.cookie;
   let decodedToken = jwt.verify(token, "shhhhh");
   let findUser = decodedToken.user;
+
   fs.readFile("./database/userDB.json", "utf-8", (error, filedata) => {
+    console.log(filedata);
     if (error) {
       write(res, 404, "text", "file not found");
     } else {
       filedata = JSON.parse(filedata);
-      console.log(filedata.data);
+      data = JSON.parse(data);
       let status = false;
       filedata.data.forEach((user) => {
-        if (user.email === findUser.email) {
+        if (user.email === data.email && findUser.email === data.email) {
           write(res, 200, "text", "token verify successfully");
           status = true;
         }
       });
       if (status === false) {
-        write(res, 200, "text", "user not found!");
+        write(res, 404, "text", "user not found!");
       }
     }
   });
