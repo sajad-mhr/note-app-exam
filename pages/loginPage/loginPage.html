@@ -1,0 +1,279 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login Page</title>
+    <style>
+        * {
+          font-family: sans-serif;
+        }
+        body {
+          margin: 0;
+          background-color: #eef5ff;
+        }
+  
+        .container {
+          background-color: #eef5ff;
+          display: flex;
+          align-items: start;
+          justify-content: center;
+          padding: 5rem 0 5rem 0;
+        }
+        .card {
+          background-color: #7c93c3;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          padding: 20px;
+          border-radius: 15px;
+          width: min(80%, 400px);
+        }
+        .field {
+          display: flex;
+          flex-direction: column;
+          margin: 10px;
+          width: 100%;
+        }
+  
+        .field > label {
+          font-size: 16px;
+          color: #eef5ff;
+        }
+  
+        .field > label > span {
+          color: rgb(211, 0, 0);
+          margin-left: 5px;
+        }
+  
+        .field > input {
+          padding: 10px;
+          outline: none;
+          border-radius: 5px;
+          border: none;
+          box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.2);
+          margin-top: 5px;
+          width: 100%;
+          background-color: #eef5ff;
+          font-size: 16px;
+        }
+  
+        .submit-btn {
+          width: 100%;
+        }
+  
+        .submit-btn > button {
+          margin-top: 15px;
+          background-color: #9eb8d9;
+          padding: 10px;
+          border: none;
+          outline: none;
+          color: #fff;
+          font-size: 17px;
+          width: 100%;
+          border-radius: 5px;
+          box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.2);
+          cursor: pointer;
+        }
+        .submit-btn > button:disabled{
+          background-color: #6f7f94;
+          color: #aaaaaa;
+          cursor: default;
+        }
+  
+        .text {
+          font-size: 24px;
+          color: #eef5ff;
+          font-weight: bold;
+          margin-bottom: 10px;
+        }
+  
+        .error {
+          margin-top: 6px;
+          margin-left: 2px;
+          font-size: 14px;
+          color: rgb(173, 0, 0);
+          display: none;
+        }
+  
+        .go-link {
+          width: 100%;
+          margin-top: 14px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+  
+        .go-link > a {
+          margin-left: 5px;
+          text-decoration: none;
+          color: #00275e;
+          font-weight: bold;
+        }
+        .go-link > span {
+          color: #fff;
+        }
+        .toast {
+          display: flex;
+          position: fixed;
+          top: -200px;
+          right: 20px;
+          background-color: #00275e;
+          border-radius: 7px;
+          color: #eef5ff;
+          font-size: 17px;
+          box-shadow: 0 5px 20px 2px rgba(0, 0, 0, 0.2);
+        }
+        .toast > span {
+          margin: 18px;
+        }
+        .toast > button {
+          margin: 12px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background-color: transparent;
+          border: none;
+          color: #eef5ff;
+          font-size: 20px;
+          cursor: pointer;
+        }
+  
+        .show {
+          animation: showToast 0.3s forwards linear;
+        }
+        .hide {
+          animation: hideToast 0.3s forwards linear;
+        }
+  
+        @keyframes showToast {
+          0% {
+            top: -200px;
+          }
+          100% {
+            top: 20px;
+          }
+        }
+        @keyframes hideToast {
+          0% {
+            top: 20px;
+          }
+          100% {
+            top: -200px;
+          }
+        }
+      </style>
+  </head>
+  <body>
+    <div class="toast">
+      <span></span>
+      <button>X</button>
+    </div>
+    <div class="container">
+      <div class="card">
+        <span class="text">Welcome Back! ☻</span>
+        <div class="field">
+          <label for="email">Email<span>*</span></label>
+          <input type="text" id="email" />
+          <span id="email-error" class="error">a field is required</span>
+        </div>
+        <div class="field">
+          <label for="password">Password<span>*</span></label>
+          <input type="password" id="password" />
+          <span id="password-error" class="error">a field is required</span>
+        </div>
+        <div class="submit-btn">
+          <button id="register-btn">Login</button>
+        </div>
+        <div class="go-link">
+          <span>Don't have an account?</span>
+          <a href="/register">Register</a>
+        </div>
+      </div>
+    </div>
+  </body>
+
+  <script>
+    let email = document.getElementById("email");
+    let password = document.getElementById("password");
+    let register_btn = document.getElementById("register-btn");
+    let email_error = document.getElementById("email-error");
+    let password_error = document.getElementById("password-error");
+
+    let toast = document.querySelector(".toast");
+    let toastMsg = document.querySelector(".toast > span");
+    let toastBtn = document.querySelector(".toast > button");
+
+    function validationForm() {
+      if (!email.value) {
+        email_error.style.display = "block";
+        email_error.innerHTML = "Email is required.";
+      } else {
+        email_error.style.display = "none";
+      }
+      if (!password.value) {
+        password_error.style.display = "block";
+        password_error.innerHTML = "Password is required.";
+      } else {
+        password_error.style.display = "none";
+      }
+      if (email.value && password.value) {
+        register_btn.setAttribute("disabled", true);
+        email_error.style.display = "none";
+        password_error.style.display = "none";
+
+        let userObj = {
+          email: email.value,
+          password: password.value,
+        };
+        const URL = "http://127.0.0.1:8080/loginApi";
+        fetch(URL, {
+          method: "POST",
+          body: JSON.stringify(userObj),
+        }).then((res) => {
+          switch (res.status) {
+            case 200:
+              res.text().then((data) => {
+                console.log(data);
+                openToast(data, "green");
+                register_btn.removeAttribute("disabled");
+              });
+              break;
+
+            case 404:
+              res.text().then((data) => {
+                console.log(data);
+                openToast(data, "red");
+                register_btn.removeAttribute("disabled");
+              });
+              break;
+            default:
+              res.text().then((data) => {
+                console.log(data);
+                openToast(data, "yellow");
+                register_btn.removeAttribute("disabled");
+              });
+              break;
+          }
+        });
+      }
+    }
+    function closeToast() {
+      toast.classList.remove("show");
+      toast.classList.add("hide");
+    }
+    function openToast(msg, color) {
+      toast.classList.remove("hide");
+      toast.classList.add("show");
+      toast.style.backgroundColor = color;
+      toastMsg.innerHTML = msg;
+      setTimeout(() => {
+        toast.classList.remove("show");
+        toast.classList.add("hide");
+      }, 3000);
+    }
+
+    toastBtn.addEventListener("click", closeToast);
+    register_btn.addEventListener("click", validationForm);
+  </script>
+</html>
