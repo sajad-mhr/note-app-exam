@@ -19,10 +19,10 @@
   "password": "111111" 
 }
 ```
-### GET: get note
+### GET: Get Note
 #### http://localhost:8080/getNotesApi
 
-### POST: create note
+### POST: Create Note
 #### http://localhost:8080/createNoteApi
 ```json
 {
@@ -30,7 +30,7 @@
   "body":"note body"
 }
 ```
-### POST: delete note
+### POST: Delete Note
 #### http://localhost:8080/deleteNoteApi
 ```json
 {
