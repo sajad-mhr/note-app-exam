@@ -37,3 +37,8 @@
   "noteId":"8b0mbzp7pd"
 }
 ```
+
+## Pages
+#### http://localhost:8080/register
+#### http://localhost:8080/login
+#### http://localhost:8080/notes
