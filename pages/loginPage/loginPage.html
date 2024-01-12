@@ -237,10 +237,13 @@
                 console.log(data);
                 openToast(data, "green");
                 register_btn.removeAttribute("disabled");
+                setTimeout(() => {
+                  window.location.href = "/notes"
+                }, 1000);
               });
               break;
 
-            case 404:
+            case 401:
               res.text().then((data) => {
                 console.log(data);
                 openToast(data, "red");
@@ -274,6 +277,14 @@
     }
 
     toastBtn.addEventListener("click", closeToast);
+
     register_btn.addEventListener("click", validationForm);
+
+    window.addEventListener("DOMContentLoaded",()=>{
+      let token = document.cookie;
+      if(token.split("=")[1]){
+        window.location.href = "/notes"
+      }
+    })
   </script>
 </html>

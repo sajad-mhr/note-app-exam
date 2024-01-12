@@ -1,0 +1,350 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Note App :)</title>
+    <style>
+      * {
+        font-family: sans-serif;
+      }
+      body {
+        margin: 0;
+        background-color: #eef5ff;
+      }
+      header {
+        background-color: #00275e;
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-shadow: 0 2px 10px 2px rgba(0, 0, 0, 0.2);
+        position: sticky;
+        top: 0;
+        left: 0;
+        z-index: 999;
+      }
+      header > span {
+        font-size: 20px;
+        font-weight: bold;
+        color: #fff;
+      }
+      header > button {
+        font-size: 15px;
+        font-weight: bold;
+        color: #fff;
+        background-color: rgb(218, 0, 0);
+        border: none;
+        outline: none;
+        border-radius: 6px;
+        padding: 10px;
+        transition: 0.3s ease-in-out;
+        cursor: pointer;
+      }
+      header > button:hover {
+        background-color: rgb(189, 0, 0);
+      }
+      .form-create-note {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+      .input {
+        background-color: #fff;
+        box-shadow: inset 0 0 10px 2px rgba(0, 0, 0, 0.2);
+        border: none;
+        outline: none;
+        border-radius: 5px;
+        padding: 12px;
+        margin-top: 10px;
+        width: 100%;
+        font-size: 17px;
+        max-width: 400px;
+      }
+      .form-create-note > button {
+        width: 100%;
+        background-color: #00275e;
+        border: none;
+        outline: none;
+        border-radius: 5px;
+        margin-top: 10px;
+        color: #fff;
+        padding: 10px;
+        cursor: pointer;
+        max-width: 400px;
+      }
+
+      .notes-container {
+        padding: 10px;
+        padding-top: 0;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        justify-content: center;
+        gap: 10px;
+      }
+      .notes-card {
+        background-color: #00275e;
+        color: #fff;
+        border-radius: 5px;
+        display: flex;
+        width: 100%;
+        max-width: 450px;
+        height: auto;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .body-scroller {
+        background-color: #00275e;
+        border: 1px solid #eef5ff;
+        box-shadow: inset 0 0 10px 2px rgba(0, 0, 0, 0.2);
+        max-height: 190px;
+        padding: 14px;
+        border-radius: 5px;
+        overflow-y: auto;
+        width: 100%;
+      }
+      /* width */
+      .body-scroller::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      /* Track */
+      .body-scroller::-webkit-scrollbar-track {
+        background: #f1f1f1;
+      }
+
+      /* Handle */
+      .body-scroller::-webkit-scrollbar-thumb {
+        background: #0044a3;
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+      }
+
+      /* Handle on hover */
+      .body-scroller::-webkit-scrollbar-thumb:hover {
+        background: #0059d4;
+      }
+
+      .content {
+        display: flex;
+        flex-direction: column;
+        word-break: break-all;
+        margin-right: 15px;
+        margin: 20px;
+        width: 100%;
+      }
+      .delete > button {
+        background-color: rgb(209, 0, 0);
+        border: none;
+        border-radius: 5px;
+        padding: 10px;
+        color: #fff;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: bold;
+        margin: 20px;
+      }
+      .content > .title {
+        font-size: 25px;
+        font-weight: bold;
+        margin-bottom: 7px;
+      }
+      .content > .body {
+        font-size: 17px;
+        color: #deedff;
+      }
+      .no-note {
+        background-color: rgba(0, 39, 94, 0.2);
+        border: 1px solid #00275e;
+        box-shadow: 0 0 40px 2px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        border-radius: 4px;
+        width: 80%;
+        max-width: 300px;
+        font-size: 18px;
+        text-align: center;
+        color: #00275e;
+      }
+      .empty-error {
+        color: rgb(209, 0, 0);
+        margin-top: 10px;
+        font-size: 16px;
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <span id="fullname">Hi sajad</span>
+      <button id="logout">logout</button>
+    </header>
+
+    <div class="form-create-note">
+      <input class="input" id="title" type="text" placeholder="Title" />
+      <textarea
+        class="input"
+        id="body"
+        cols="30"
+        rows="5"
+        placeholder="Body"
+      ></textarea>
+      <button id="add-note-btn">Add Note</button>
+      <span class="empty-error">empry</span>
+    </div>
+
+    <div class="notes-container"></div>
+  </body>
+
+  <script>
+    let token = document.cookie;
+    if (!token) window.location.href = "/login";
+    let logoutBtn = document.getElementById("logout");
+    let fullname = document.getElementById("fullname");
+    let title = document.getElementById("title");
+    let body = document.getElementById("body");
+    let addNoteBtn = document.getElementById("add-note-btn");
+    let notesContainer = document.querySelector(".notes-container");
+    let emptyError = document.querySelector(".empty-error");
+
+    function delete_cookie(name) {
+      if (document.cookie) {
+        document.cookie = name + "=" + ";expires=Thu, 01 Jan 1970 00:00:01 GMT";
+      }
+    }
+    function parseJwt(token) {
+      let base64Url = token.split(".")[1];
+      let base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+      let jsonPayload = decodeURIComponent(
+        window
+          .atob(base64)
+          .split("")
+          .map(function (c) {
+            return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+          })
+          .join("")
+      );
+
+      return JSON.parse(jsonPayload);
+    }
+
+    function getNotes() {
+      const URL = "http://127.0.0.1:8080/getNotesApi";
+      fetch(URL)
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.reverse().length === 0) {
+            let notNoteElem = `
+            <span class="no-note">Write a note to yourself right now ♥</span>
+            `;
+            notesContainer.innerHTML = notNoteElem;
+          } else {
+            notesContainer.innerHTML = "";
+            let noteCard = "";
+            data.forEach((note) => {
+              noteCard = `
+            <div class="notes-card">
+             <div class="content">
+              <span class="title">${note.title}</span>
+              <div class="body-scroller">
+                <span class="body">${note.body.replace(/\n/g, "<br />")}</span>
+                </div>
+              </div>
+              <div class="delete">
+                <button onclick="deleteNote('${note.noteId}')">Delete</button>
+              </div>
+            </div>
+            `;
+              notesContainer.innerHTML += noteCard;
+            });
+          }
+        });
+    }
+
+    function addNote() {
+      const URL = "http://127.0.0.1:8080/createNoteApi";
+      if (title.value.trim() && body.value.trim()) {
+        emptyError.style.display = "none";
+        let noteObj = {
+          title: title.value.trim(),
+          body: body.value.trim(),
+        };
+        fetch(URL, {
+          method: "POST",
+          body: JSON.stringify(noteObj),
+        }).then((res) => {
+          switch (res.status) {
+            case 200:
+              res.text().then((data) => {
+                console.log(data);
+                getNotes();
+                title.value = "";
+                body.value = "";
+              });
+              break;
+
+            case 403:
+              res.text().then((data) => {
+                console.log(data);
+              });
+              break;
+            default:
+              res.text().then((data) => {
+                console.log(data);
+              });
+              break;
+          }
+        });
+      } else {
+        console.log("empty");
+        emptyError.style.display = "block";
+        emptyError.innerHTML = "Title and Body is required";
+      }
+    }
+
+    function deleteNote(noteId) {
+      const URL = "http://127.0.0.1:8080/deleteNoteApi";
+      let noteObj = {
+        noteId: noteId,
+      };
+      fetch(URL, {
+        method: "POST",
+        body: JSON.stringify(noteObj),
+      }).then((res) => {
+        switch (res.status) {
+          case 200:
+            res.text().then((data) => {
+              console.log(data);
+              getNotes();
+            });
+            break;
+
+          case 403:
+            res.text().then((data) => {
+              console.log(data);
+            });
+            break;
+          default:
+            res.text().then((data) => {
+              console.log(data);
+            });
+            break;
+        }
+      });
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      getNotes();
+      fullname.innerHTML = `Welcome ${parseJwt(token).user.fullname}`;
+    });
+
+    addNoteBtn.addEventListener("click", addNote);
+
+    logoutBtn.addEventListener("click", () => {
+      delete_cookie("userToken");
+      window.location.href = "/login";
+    });
+  </script>
+</html>

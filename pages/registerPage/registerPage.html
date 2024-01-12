@@ -290,11 +290,11 @@
                 register_btn.removeAttribute("disabled")
                 setTimeout(() => {
                   window.location.href = "/login"
-                }, 1400);
+                }, 1000);
               });
               break;
 
-            case 404:
+            case 403:
               res.text().then((data) => {
                 console.log(data);
                 openToast(data, "red");
@@ -331,12 +331,10 @@
     toastBtn.addEventListener("click", closeToast);
 
     register_btn.addEventListener("click", validationForm);
-    window.addEventListener("load",()=>{
-      let x = document.cookie;
-      console.log(x);
-      console.log(x.split("=")[1]);
-      if(x.split("=")[1]){
-        window.location.href = "/home"
+    window.addEventListener("DOMContentLoaded",()=>{
+      let token = document.cookie;
+      if(token.split("=")[1]){
+        window.location.href = "/notes"
       }
     })
   </script>
