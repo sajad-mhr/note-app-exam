@@ -3,6 +3,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Register Page</title>
+    <link rel="stylesheet" href="/assets/Bootstrap/index.css" />
     <style>
       * {
         font-family: sans-serif;
@@ -75,7 +76,7 @@
         box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.2);
         cursor: pointer;
       }
-      .submit-btn > button:disabled{
+      .submit-btn > button:disabled {
         background-color: #6f7f94;
         color: #aaaaaa;
         cursor: default;
@@ -92,8 +93,9 @@
         margin-top: 6px;
         margin-left: 2px;
         font-size: 14px;
-        color: rgb(173, 0, 0);
+        color: rgb(153, 0, 0);
         display: none;
+        font-weight: bold;
       }
 
       .go-link {
@@ -113,7 +115,7 @@
       .go-link > span {
         color: #fff;
       }
-      .toast {
+      .toast-s {
         display: flex;
         position: fixed;
         top: -200px;
@@ -124,10 +126,10 @@
         font-size: 17px;
         box-shadow: 0 5px 20px 2px rgba(0, 0, 0, 0.2);
       }
-      .toast > span {
+      .toast-s > span {
         margin: 18px;
       }
-      .toast > button {
+      .toast-s > button {
         margin: 12px;
         display: flex;
         align-items: center;
@@ -165,8 +167,8 @@
     </style>
   </head>
   <body>
-    <div class="toast">
-      <span>this is a message adawdad adawd awd awdawdwdaw</span>
+    <div class="toast-s">
+      <span></span>
       <button>X</button>
     </div>
     <div class="container">
@@ -223,12 +225,12 @@
       "confirm-password-error"
     );
 
-    let toast = document.querySelector(".toast");
-    let toastMsg = document.querySelector(".toast > span");
-    let toastBtn = document.querySelector(".toast > button");
+    let toast = document.querySelector(".toast-s");
+    let toastMsg = document.querySelector(".toast-s > span");
+    let toastBtn = document.querySelector(".toast-s > button");
+    var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
     function validationForm() {
-
       if (!fullname.value) {
         fullname_error.style.display = "block";
         fullname_error.innerHTML = "fullname is required.";
@@ -258,15 +260,20 @@
         confirm_password_error.innerHTML =
           "Password and Confirm Password Not Match";
       }
+      if (email.value &&!email.value.match(mailformat)) {
+        email_error.style.display = "block";
+        email_error.innerHTML = "The Email is not valid";
+      }
 
       if (
         fullname.value &&
         email.value &&
         password.value &&
         confirm_password.value &&
-        password.value === confirm_password.value
+        password.value === confirm_password.value &&
+        email.value.match(mailformat)
       ) {
-        register_btn.setAttribute("disabled",true)
+        register_btn.setAttribute("disabled", true);
         fullname_error.style.display = "none";
         email_error.style.display = "none";
         password_error.style.display = "none";
@@ -287,9 +294,9 @@
               res.text().then((data) => {
                 console.log(data);
                 openToast(data, "green");
-                register_btn.removeAttribute("disabled")
+                register_btn.removeAttribute("disabled");
                 setTimeout(() => {
-                  window.location.href = "/login"
+                  window.location.href = "/login";
                 }, 1000);
               });
               break;
@@ -297,15 +304,16 @@
             case 403:
               res.text().then((data) => {
                 console.log(data);
-                openToast(data, "red");
-                register_btn.removeAttribute("disabled")
+                email_error.style.display = "block";
+                email_error.innerHTML = data;
+                register_btn.removeAttribute("disabled");
               });
               break;
             default:
               res.text().then((data) => {
                 console.log(data);
                 openToast(data, "yellow");
-                register_btn.removeAttribute("disabled")
+                register_btn.removeAttribute("disabled");
               });
               break;
           }
@@ -331,11 +339,11 @@
     toastBtn.addEventListener("click", closeToast);
 
     register_btn.addEventListener("click", validationForm);
-    window.addEventListener("DOMContentLoaded",()=>{
+    window.addEventListener("DOMContentLoaded", () => {
       let token = document.cookie;
-      if(token.split("=")[1]){
-        window.location.href = "/notes"
+      if (token.split("=")[1]) {
+        window.location.href = "/notes";
       }
-    })
+    });
   </script>
 </html>

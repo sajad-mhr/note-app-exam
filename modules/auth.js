@@ -77,7 +77,7 @@ function registerController(req, res, data) {
             }
           });
         } else {
-          write(res, 403, "text", "user already exits");
+          write(res, 403, "text", "email already exists");
         }
       }
     });

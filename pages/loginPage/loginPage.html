@@ -3,6 +3,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login Page</title>
+    <link rel="stylesheet" href="/assets/Bootstrap/index.css" />
     <style>
         * {
           font-family: sans-serif;
@@ -89,12 +90,13 @@
         }
   
         .error {
-          margin-top: 6px;
-          margin-left: 2px;
-          font-size: 14px;
-          color: rgb(173, 0, 0);
-          display: none;
-        }
+        margin-top: 6px;
+        margin-left: 2px;
+        font-size: 14px;
+        color: rgb(153, 0, 0);
+        display: none;
+        font-weight: bold;
+      }
   
         .go-link {
           width: 100%;
@@ -113,8 +115,9 @@
         .go-link > span {
           color: #fff;
         }
-        .toast {
+        .toast-s {
           display: flex;
+          justify-content: flex-end;
           position: fixed;
           top: -200px;
           right: 20px;
@@ -124,10 +127,10 @@
           font-size: 17px;
           box-shadow: 0 5px 20px 2px rgba(0, 0, 0, 0.2);
         }
-        .toast > span {
+        .toast-s > span {
           margin: 18px;
         }
-        .toast > button {
+        .toast-s > button {
           margin: 12px;
           display: flex;
           align-items: center;
@@ -165,7 +168,7 @@
       </style>
   </head>
   <body>
-    <div class="toast">
+    <div class="toast-s">
       <span></span>
       <button>X</button>
     </div>
@@ -200,9 +203,9 @@
     let email_error = document.getElementById("email-error");
     let password_error = document.getElementById("password-error");
 
-    let toast = document.querySelector(".toast");
-    let toastMsg = document.querySelector(".toast > span");
-    let toastBtn = document.querySelector(".toast > button");
+    let toast = document.querySelector(".toast-s");
+    let toastMsg = document.querySelector(".toast-s > span");
+    let toastBtn = document.querySelector(".toast-s > button");
 
     function validationForm() {
       if (!email.value) {

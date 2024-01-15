@@ -3,6 +3,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Note App :)</title>
+    <link rel="stylesheet" href="/assets/Bootstrap/index.css" />
     <style>
       * {
         font-family: sans-serif;
@@ -75,22 +76,12 @@
         max-width: 400px;
       }
 
-      .notes-container {
-        padding: 10px;
-        padding-top: 0;
-        display: flex;
-        flex-wrap: wrap;
-        align-items: flex-start;
-        justify-content: center;
-        gap: 10px;
-      }
       .notes-card {
         background-color: #00275e;
         color: #fff;
         border-radius: 5px;
         display: flex;
         width: 100%;
-        max-width: 450px;
         height: auto;
         align-items: center;
         justify-content: space-between;
@@ -194,8 +185,9 @@
       <button id="add-note-btn">Add Note</button>
       <span class="empty-error">empry</span>
     </div>
-
-    <div class="notes-container"></div>
+    <div class="container mb-3">
+      <div class="row g-3" id="notes"></div>
+    </div>
   </body>
 
   <script>
@@ -206,7 +198,7 @@
     let title = document.getElementById("title");
     let body = document.getElementById("body");
     let addNoteBtn = document.getElementById("add-note-btn");
-    let notesContainer = document.querySelector(".notes-container");
+    let notesContainer = document.getElementById("notes");
     let emptyError = document.querySelector(".empty-error");
 
     function delete_cookie(name) {
@@ -237,7 +229,9 @@
         .then((data) => {
           if (data.reverse().length === 0) {
             let notNoteElem = `
-            <span class="no-note">Write a note to yourself right now ♥</span>
+            <div class="d-flex w-100 align-items-center justify-content-center">
+              <span class="no-note">Write a note to yourself right now ♥</span>
+            <div>
             `;
             notesContainer.innerHTML = notNoteElem;
           } else {
@@ -245,7 +239,8 @@
             let noteCard = "";
             data.forEach((note) => {
               noteCard = `
-            <div class="notes-card">
+            <div class="col-12 col-md-6">
+              <div class="notes-card">
              <div class="content">
               <span class="title">${note.title}</span>
               <div class="body-scroller">
@@ -256,6 +251,7 @@
                 <button onclick="deleteNote('${note.noteId}')">Delete</button>
               </div>
             </div>
+              </div>
             `;
               notesContainer.innerHTML += noteCard;
             });
