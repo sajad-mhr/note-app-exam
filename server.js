@@ -13,6 +13,7 @@ let headers = {
   text: { "Content-Type": "Text/Plain" },
   html: { "Content-Type": "text/html" },
   css: { "Content-Type": "text/css" },
+  js: { "Content-Type": "text/javascript" },
   json: { "Content-Type": "application/json" },
 };
 
@@ -20,6 +21,7 @@ let types = {
   text: "Text/Plain",
   html: "Text/Html",
   css: "text/css",
+  js: "text/javascript",
   json: "application/json",
 };
 
@@ -57,23 +59,30 @@ function requestHandler(req, res) {
   let route = req.url.split("/")[1];
   console.log(req.url);
   if (route !== "favicon.ico") {
-    if (req.url === "/assets/Bootstrap/index.css") {
-      console.log("hi");
-      fs.readFile("./assets/Bootstrap/index.css", function (err, data) {
-        write(res, 200, "css", data);
-      });
-    } else {
-      let data = "";
-      req.on("data", (chunk) => {
-        data += chunk;
-      });
-      req.on("end", () => {
-        try {
-          routes[route](req, res, data);
-        } catch (err) {
-          write(res, 404, "text", "api not found");
-        }
-      });
+    switch (req.url) {
+      case "/assets/Bootstrap/index.css":
+        fs.readFile("./assets/Bootstrap/index.css", function (err, data) {
+          write(res, 200, "css", data);
+        });
+        break;
+      case "/assets/Bootstrap/index.js":
+        fs.readFile("./assets/Bootstrap/index.js", function (err, data) {
+          write(res, 200, "js", data);
+        });
+        break;
+      default:
+        let data = "";
+        req.on("data", (chunk) => {
+          data += chunk;
+        });
+        req.on("end", () => {
+          try {
+            routes[route](req, res, data);
+          } catch (err) {
+            write(res, 404, "text", "api not found");
+          }
+        });
+        break;
     }
   }
 }
