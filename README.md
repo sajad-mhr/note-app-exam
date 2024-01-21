@@ -30,13 +30,9 @@
   "body":"note body"
 }
 ```
-### POST: Delete Note
-#### http://localhost:8080/deleteNoteApi
-```json
-{
-  "noteId":"8b0mbzp7pd"
-}
-```
+### DELETE: Delete Note
+#### http://localhost:8080/deleteNoteApi/{noteId}
+
 
 ## Pages
 #### http://localhost:8080/register
