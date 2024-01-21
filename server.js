@@ -57,32 +57,47 @@ function write(res, statusCode, headerType, body, token) {
 
 function requestHandler(req, res) {
   let route = req.url.split("/")[1];
-  console.log(req.url);
+  let path = __dirname + req.url;
   if (route !== "favicon.ico") {
-    switch (req.url) {
-      case "/assets/Bootstrap/index.css":
-        fs.readFile("./assets/Bootstrap/index.css", function (err, data) {
-          write(res, 200, "css", data);
-        });
-        break;
-      case "/assets/Bootstrap/index.js":
-        fs.readFile("./assets/Bootstrap/index.js", function (err, data) {
-          write(res, 200, "js", data);
-        });
-        break;
-      default:
-        let data = "";
-        req.on("data", (chunk) => {
-          data += chunk;
-        });
-        req.on("end", () => {
-          try {
-            routes[route](req, res, data);
-          } catch (err) {
-            write(res, 404, "text", "api not found");
-          }
-        });
-        break;
+    if (route === "assets" && !path.includes(".map")) {
+      console.log(path);
+      fs.readFile(path, (err, data) => {
+        if (err) {
+          console.log(err);
+        } else {
+
+          res.write(data);
+          res.end();
+        }
+      });
+    } else {
+      let data = "";
+      req.on("data", (chunk) => {
+        data += chunk;
+      });
+      req.on("end", () => {
+        try {
+          routes[route](req, res, data);
+        } catch (err) {
+          write(res, 404, "text", "api not found");
+        }
+      });
     }
+
+    // switch (req.url) {
+    //   case "/assets/Bootstrap/index.css":
+    //     fs.readFile("./assets/Bootstrap/index.css", function (err, data) {
+    //       write(res, 200, "css", data);
+    //     });
+    //     break;
+    //   case "/assets/Bootstrap/index.js":
+    //     fs.readFile("./assets/Bootstrap/index.js", function (err, data) {
+    //       write(res, 200, "js", data);
+    //     });
+    //     break;
+    //   default:
+
+    //     break;
+    // }
   }
 }

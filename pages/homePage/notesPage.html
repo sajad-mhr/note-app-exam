@@ -3,8 +3,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Note App :)</title>
-    <link rel="stylesheet" href="/assets/Bootstrap/index.css" />
-    <script src="/assets/Bootstrap/index.js"></script>
+    <link rel="stylesheet" href="/assets/Bootstrap/bootstrap.min.css" />
+    <link
+      rel="stylesheet"
+      href="/assets/Bootstrap/icons/bootstrap-icons.min.css"
+    />
+    <script src="/assets/Bootstrap/bootstrap.bundle.min.js"></script>
     <style>
       * {
         font-family: sans-serif;
@@ -123,17 +127,6 @@
         margin: 20px;
         width: 100%;
       }
-      .delete > button {
-        background-color: rgb(209, 0, 0);
-        border: none;
-        border-radius: 5px;
-        padding: 10px;
-        color: #fff;
-        cursor: pointer;
-        font-size: 14px;
-        font-weight: bold;
-        margin: 20px;
-      }
       .content > .title {
         font-size: 25px;
         font-weight: bold;
@@ -200,7 +193,7 @@
                 <textarea
                   type="text"
                   class="form-control"
-                  style="height: 150px;text-align: justify;"
+                  style="height: 150px; text-align: justify"
                   id="body"
                   placeholder="Body"
                 ></textarea>
@@ -233,8 +226,8 @@
       <div class="d-flex align-items-center">
         <div class="dropdown">
           <button
-          data-bs-offset="-77,15"
-          data-bs-auto-close="outside"
+            data-bs-offset="-77,15"
+            data-bs-auto-close="outside"
             data-bs-toggle="dropdown"
             id="avatar"
             style="width: 40px; height: 40px"
@@ -242,13 +235,25 @@
           >
             <span id="fullname-first-word"> S </span>
           </button>
-          <ul style="width: 200px;word-wrap: break-word;" class="dropdown-menu dropdown-menu-start p-1" aria-labelledby="avatar">
-            <li class="p-2"><span id="show-fullname">sajad</span></li>
-            <li class="p-2"><span id="show-email">sajad@gmail.com</span></li>
-            <li><hr class="dropdown-divider"></li>
-            <li class="p-2">
-              <button id="logout" class="btn text-start text-danger p-0 w-100">
-                logout
+          <ul
+            style="width: 200px; word-wrap: break-word"
+            class="dropdown-menu dropdown-menu-start p-1"
+            aria-labelledby="avatar"
+          >
+            <li class="p-2 d-flex align-items-center">
+              <i class="bi bi-person fs-4 me-1"></i>
+              <span id="show-fullname">sajad</span>
+              
+            </li>
+            <li class="p-2 d-flex align-items-center">
+              <i class="bi bi-at fs-4 me-1"></i>
+              <span id="show-email">sajad@gmail.com</span>
+            </li>
+            <li><hr class="dropdown-divider" /></li>
+            <li class="p-2 d-flex align-items-center">
+              <button id="logout" class="btn btn-outline-danger text-start p-2 w-100">
+                <i class="bi bi-door-closed fs-4"></i>
+                <span class="fw-bold" > logout </span>
               </button>
             </li>
           </ul>
@@ -259,17 +264,20 @@
           data-bs-toggle="modal"
           data-bs-target="#staticBackdrop"
         >
-          new note
+          <span class="me-2"> new note </span>
+          <i class="bi bi-pen"></i>
         </button>
       </div>
     </header>
-    <div class="container" style="margin-bottom: 70px;">
+    <div class="container" style="margin-bottom: 70px">
       <div class="row g-3 mt-2" id="notes"></div>
     </div>
     <footer
-    style="background-color: #00275e;color: #fff;
-    box-shadow: 0 -1px 10px 1px rgba(0, 0, 0, 0.3);
-    "
+      style="
+        background-color: #00275e;
+        color: #fff;
+        box-shadow: 0 -1px 10px 1px rgba(0, 0, 0, 0.3);
+      "
       class="position-fixed w-100 bottom-0 d-flex align-items-center justify-content-center p-2"
     >
       <span class="fs-6">Create By Sajad Mehri © 2024</span>
@@ -350,7 +358,11 @@
                 </div>
               </div>
               <div class="delete">
-                <button onclick="deleteNote('${note.noteId}')">Delete</button>
+                <button class="fs-5 btn btn-danger me-3 p-2" onclick="deleteNote('${
+                  note.noteId
+                }')">
+                  <i class="bi bi-trash"></i>
+                </button>
               </div>
             </div>
               </div>
@@ -448,7 +460,6 @@
     logoutBtn.addEventListener("click", () => {
       delete_cookie("userToken");
       window.location.href = "/login";
-      
     });
 
     window.addEventListener("scroll", (e) => {
