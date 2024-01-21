@@ -404,13 +404,9 @@
     }
 
     function deleteNote(noteId) {
-      const URL = "http://127.0.0.1:8080/deleteNoteApi";
-      let noteObj = {
-        noteId: noteId,
-      };
+      const URL = `http://127.0.0.1:8080/deleteNoteApi/${noteId}`;
       fetch(URL, {
-        method: "POST",
-        body: JSON.stringify(noteObj),
+        method: "DELETE",
       }).then((res) => {
         switch (res.status) {
           case 200:

@@ -140,8 +140,8 @@ function createNote(req, res, data) {
   }
 }
 
-function deleteNote(req, res, data) {
-  let noteID = JSON.parse(data);
+function deleteNote(req, res) {
+  let noteID = req.url.split("/")[2]
   if (noteID === undefined) {
     write(res, 404, "text", "bad Data");
   } else {
@@ -162,14 +162,15 @@ function deleteNote(req, res, data) {
                 if (error) {
                   write(res, 404, "text", "file not found");
                 } else {
-                  data = JSON.parse(data);
                   filedata = JSON.parse(filedata);
                   let foundNote = false;
                   filedata.data.forEach((note) => {
-                    if (note.noteId === data.noteId) {
+                    console.log("> "+note.noteId);
+                    console.log(">> "+noteID);
+                    if (note.noteId === noteID) {
                       foundNote = true;
                       let remove = filedata.data.filter((note) => {
-                        return note.noteId !== data.noteId;
+                        return note.noteId !== noteID;
                       });
                       filedata.data = [];
                       if (remove[0] !== undefined) {
