@@ -1,0 +1,179 @@
+.container {
+  background-color: #eef5ff !important;
+  display: flex;
+  align-items: start;
+  justify-content: center;
+  padding: 5rem 0 5rem 0;
+}
+.card-login {
+  background-color: #7c93c3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  border-radius: 15px;
+  width: min(80%, 400px);
+}
+.field {
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+  width: 100%;
+}
+
+.field > label {
+  font-size: 16px;
+  color: #eef5ff;
+}
+
+.field > label > span {
+  color: rgb(211, 0, 0);
+  margin-left: 5px;
+}
+.field > input {
+  padding: 10px;
+  outline: none;
+  border-radius: 5px;
+  border: none;
+  box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.2);
+  margin-top: 5px;
+  width: 100%;
+  background-color: #eef5ff;
+  font-size: 16px;
+}
+
+.field-passsword {
+  border-radius: 5px;
+  border: none;
+  box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.2);
+  margin-top: 5px;
+  width: 100%;
+  background-color: #eef5ff;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+}
+
+.field-passsword > input {
+  width: 100%;
+  flex: 13;
+  height: 100%;
+  padding: 13px;
+  border: none;
+  background-color: transparent;
+  outline: none;
+}
+.field-passsword > i {
+  flex: 1;
+  margin-left: 10px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.submit-btn {
+  width: 100%;
+}
+
+.submit-btn > button {
+  margin-top: 15px;
+  background-color: #9eb8d9;
+  padding: 10px;
+  border: none;
+  outline: none;
+  color: #fff;
+  font-size: 17px;
+  width: 100%;
+  border-radius: 5px;
+  box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+.submit-btn > button:disabled {
+  background-color: #6f7f94;
+  color: #aaaaaa;
+  cursor: default;
+}
+
+.text {
+  font-size: 24px;
+  color: #eef5ff;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.error {
+  margin-top: 6px;
+  margin-left: 2px;
+  font-size: 14px;
+  color: rgb(153, 0, 0);
+  display: none;
+  font-weight: bold;
+}
+
+.go-link {
+  width: 100%;
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.go-link > a {
+  margin-left: 5px;
+  text-decoration: none;
+  color: #00275e;
+  font-weight: bold;
+}
+.go-link > span {
+  color: #fff;
+}
+.toast-s {
+  display: flex;
+  justify-content: flex-end;
+  position: fixed;
+  top: -200px;
+  right: 20px;
+  background-color: #00275e;
+  border-radius: 7px;
+  color: #eef5ff;
+  font-size: 17px;
+  box-shadow: 0 5px 20px 2px rgba(0, 0, 0, 0.2);
+}
+.toast-s > span {
+  margin: 18px;
+}
+.toast-s > button {
+  margin: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  border: none;
+  color: #eef5ff;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.show {
+  animation: showToast 0.3s forwards linear;
+}
+.hide {
+  animation: hideToast 0.3s forwards linear;
+}
+
+@keyframes showToast {
+  0% {
+    top: -200px;
+  }
+  100% {
+    top: 20px;
+  }
+}
+@keyframes hideToast {
+  0% {
+    top: 20px;
+  }
+  100% {
+    top: -200px;
+  }
+}

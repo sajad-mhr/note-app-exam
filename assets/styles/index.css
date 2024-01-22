@@ -1,0 +1,13 @@
+@font-face {
+  font-family: iranSans;
+  src: url(/assets/fonts/IRANSansXV-VF.ttf);
+}
+
+
+* {
+  font-family:iranSans;
+}
+body {
+  margin: 0;
+  background-color: #eef5ff !important;
+}
