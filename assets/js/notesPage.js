@@ -48,41 +48,65 @@ function parseJwt(token) {
 function getNotes() {
   const URL = "http://127.0.0.1:8080/getNotesApi";
   fetch(URL)
-    .then((res) => res.json())
-    .then((data) => {
-      if (data.reverse().length === 0) {
-        let notNoteElem = `
-        <div class="d-flex w-100 align-items-center justify-content-center">
-          <span class="no-note">Write a note to yourself right now ♥</span>
-        <div>
-        `;
-        notesContainer.innerHTML = notNoteElem;
-      } else {
-        notesContainer.innerHTML = "";
-        let noteCard = "";
-        data.forEach((note) => {
-          noteCard = `
-        <div class="col-12">
-          <div class="notes-card">
-         <div class="content">
-          <span class="title">${note.title}</span>
-          <div class="body-scroller">
-            <span class="body">${note.body.replace(/\n/g, "<br />")}</span>
-            </div>
-          </div>
-          <div class="delete">
-            <button class="fs-5 btn btn-danger me-3 p-2" onclick="deleteNote('${
-              note.noteId
-            }')">
-              <i class="bi bi-trash"></i>
-            </button>
-          </div>
-        </div>
-          </div>
-        `;
-          notesContainer.innerHTML += noteCard;
-        });
+    .then((res) => {
+      switch (res.status) {
+        case 200:
+          res.json().then((data) => {
+            if (data.reverse().length === 0) {
+              let notNoteElem = `
+              <div class="d-flex w-100 align-items-center justify-content-center">
+                <span class="no-note">Write a note to yourself right now ♥</span>
+              <div>
+              `;
+              notesContainer.innerHTML = notNoteElem;
+            } else {
+              notesContainer.innerHTML = "";
+              let noteCard = "";
+              data.forEach((note) => {
+                noteCard = `
+              <div class="col-12">
+                <div class="notes-card">
+               <div class="content">
+                <span class="title">${note.title}</span>
+                <div class="body-scroller">
+                  <span class="body">${note.body.replace(
+                    /\n/g,
+                    "<br />"
+                  )}</span>
+                  </div>
+                </div>
+                <div class="delete">
+                  <button class="fs-5 btn btn-danger me-3 p-2" onclick="deleteNote('${
+                    note.noteId
+                  }')">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </div>
+              </div>
+                </div>
+              `;
+                notesContainer.innerHTML += noteCard;
+              });
+            }
+          });
+          break;
+        case 401:
+          res.text().then((data) => {
+            console.log(data);
+            delete_cookie("userToken");
+            window.location.href = "/login";
+          });
+          break;
+
+        default:
+          res.text().then((data) => {
+            console.log(data);
+          });
+          break;
       }
+    })
+    .catch((err) => {
+      console.log(err);
     });
 }
 

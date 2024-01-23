@@ -71,12 +71,12 @@ function getNotes(req, res) {
           }
         });
         if (found === false) {
-          write(res, 403, "text", "user not login token not found");
+          write(res, 401, "text", "user not login token not found");
         }
       }
     });
   } else {
-    write(res, 403, "text", "user not login token not found");
+    write(res, 401, "text", "user not login token not found");
   }
 }
 
